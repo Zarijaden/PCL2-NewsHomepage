@@ -9,7 +9,7 @@ from homepagebuilder.core.types import Context
 from homepagebuilder.core.utils.event import listen_event as on
 
 # region 版本模式定义
-DEVELOP_VERSION_PATTERN = re.compile(r'^(?P<major>[\d.]+)-(?P<type>[a-zA-Z]+)-?(?P<index>\d)+$')
+DEVELOP_VERSION_PATTERN = re.compile(r'^(?P<major>[\d.]+)-(?P<type>[a-zA-Z]+)-?(?P<index>\d+)$')
 "开发版本号模式"
 RELEASE_PATTERN = re.compile(r'^\d{1,2}\.\d+(\.\d+)?$')
 "正式版本号模式"
