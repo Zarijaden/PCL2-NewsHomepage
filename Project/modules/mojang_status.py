@@ -81,7 +81,7 @@ def get_calculated_status():
                 status['status'][key] = 'down'
             elif value == 'up':
                 status['status'][key] = 'up'
-    status['check_time'] = max((item['check_time'] for item in STATUS_RECORDS.queue if item is not None), default=datetime.min)
+    status['check_time'] = max((item.get('check_time', datetime.min) for item in STATUS_RECORDS.queue if item is not None), default=datetime.min)
     return status
         
 
