@@ -6,7 +6,7 @@ alias:
 cards:
  - animated_noticebar | s = false
  - ${@IF|${args.debug}|debug}
- - ${@MojangStatusCardReference}
+# - ${@MojangStatusCardReference} 因为上游 API 接口防护弃用
  - ${@NewsList}
  - ${@MainPageVersions|new}
 # - VersionLatestListCard | title=更新日志 | enable-card-style=True

@@ -12,6 +12,20 @@ YELLOW_COLOR = "#D1A041"
 RED_COLOR = "#D14241"
 GRAY_COLOR = "#888888"
 
+
+USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/139.0 Safari/537.36"
+)
+
+HEADERS = {
+    "User-Agent": USER_AGENT,
+    "Accept": (
+        "application/json"
+    ),
+}
+
 StatusState: TypeAlias = Literal['up', 'down', 'unknown']
 class StatusDetials(TypedDict):
     session: StatusState = "unknown"
@@ -30,10 +44,10 @@ UPDATE_INTERVAL = 150
 UPDATE_TIME = datetime.min
 STATUS_RECORDS: Queue[StatusRecord | None] = Queue(maxsize=QUEUE_MAX_SIZE)
 CALCULATED_STATUS_CACHE: StatusRecord = None
-
+    
 def get_status():
     try:
-        response = requests.get(API_URL)
+        response = requests.get(API_URL, headers=HEADERS, timeout=10)
         response.raise_for_status()  # Raise an error for bad responses
         return response.json()  # Return the JSON response as a dictionary
     except requests.RequestException as e:
@@ -55,6 +69,8 @@ def update_status():
         status['status']['textures'] = get_service_status(result, 'textures')
         status['status']['website'] = get_service_status(result, 'website')
         status['check_time'] = datetime.strptime(result.get('checkedAt'), "%Y-%m-%dT%H:%M:%S.%fZ") + timedelta(hours=8)
+    else:
+        status['check_time'] = datetime.now()
     if STATUS_RECORDS.full():
         STATUS_RECORDS.get()
     STATUS_RECORDS.put(status)
